@@ -2,10 +2,12 @@ import express from "express"
 import connectDb from "./connectDb.js";
 import auth from "../routes/userRoutes.js";
 import dotenv from 'dotenv';
+import cors from 'cors';
+import corsOptions from '../routes/cors.js';
 
 dotenv.config()
 const app = express()
-
+app.use(cors(corsOptions));
 const port = process.env.PORT || 3000;
 app.use(express.json());
 
@@ -16,4 +18,3 @@ connectDb().then(() => {
   })
   app.use("/auth", auth)
 })
-
