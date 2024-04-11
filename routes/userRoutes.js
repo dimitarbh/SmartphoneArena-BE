@@ -6,52 +6,69 @@ const router = express.Router();
 
 router.post('/register', async (req, res) => {
     const { email, password } = req.body;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
     try {
-        const existingEmail = await User.findOne({email});
-        if(existingEmail) {
-            return res.status(400).json({message: 'Email already exists'});
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: 'Invalid email address' });
+        }
+        if (!passwordRegex.test(password)) {
+            return res.status(400).json({ message: 'Invalid password. Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character' });
+        }
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+            return res.status(400).json({ message: 'Email already exists' });
         }
 
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt);
+        
         const newUser = new User({
             email,
             password: hashedPassword,
-        })
-        await newUser.save()
-        const userData = {
-            email: email
-        }
-        res.status(201).json({message: 'User created successfully', user:  userData})
-    } catch (error) {
-        res.status(500).json({message: 'Server error'})
-    }
+        });
+        await newUser.save();
 
-})
+        res.status(201).json({ message: 'User created successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 
 router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    const {email, password} = req.body;
     try {
-        const existingEmail = await User.findOne({email});
-        if(!existingEmail) {
-            return res.status(400).json({message: 'Email does not exists'});
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: 'Invalid email address' });
+        }
+        if (!passwordRegex.test(password)) {
+            return res.status(400).json({ message: 'Invalid password. Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character' });
+        }
+
+        const existingEmail = await User.findOne({ email });
+        if (!existingEmail) {
+            return res.status(400).json({ message: 'Email does not exist' });
         }
 
         const isMatch = await bcrypt.compare(password, existingEmail.password);
-        if(!isMatch) {
-            return res.status(400).json({message: 'Invalid credentials'});
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Invalid credentials' });
         }
 
         const userData = {
             email: email,
         }
-        res.status(200).json({message: 'Login successful', user:  userData})
+        res.status(200).json({ message: 'Login successful', user: userData });
     } catch (error) {
         console.error(error)
-        res.status(500).json({message: 'Server error'})
+        res.status(500).json({ message: 'Server error' })
     }
 })
+
 
 router.get('/profile', async (req, res) => {
     try {
