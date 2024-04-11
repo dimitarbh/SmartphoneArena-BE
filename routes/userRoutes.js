@@ -1,20 +1,12 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
-
+import User from '../models/user.js';
 
 const router = express.Router();
-const User = require('../models/user');
-
-
-// module.exports = router;
 
 router.post('/register', async (req, res) => {
-    const {username, password, email} = req.body;
+    const { email, password } = req.body;
     try {
-        const existingUser = await User.findOne({username});
-        if(existingUser) {
-            return res.status(400).json({message: 'User already exists'});
-        }
         const existingEmail = await User.findOne({email});
         if(existingEmail) {
             return res.status(400).json({message: 'Email already exists'});
@@ -23,14 +15,12 @@ router.post('/register', async (req, res) => {
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt);
         const newUser = new User({
-            username,
-            password: hashedPassword,
             email,
+            password: hashedPassword,
         })
         await newUser.save()
         const userData = {
-            email: email,
-            username: username
+            email: email
         }
         res.status(201).json({message: 'User created successfully', user:  userData})
     } catch (error) {

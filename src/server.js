@@ -1,5 +1,6 @@
 import express from "express"
 import connectDb from "./connectDb.js";
+import userRoutes from "../routes/userRoutes.js"
 
 const app = express()
 app.use(express.json());
@@ -9,5 +10,6 @@ connectDb().then(() => {
   app.listen(3000, () => {
     console.log("Server is running on port 3000")
   })
+  app.use('/auth', userRoutes)
 })
 
