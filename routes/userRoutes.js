@@ -5,12 +5,14 @@ import User from '../models/user.js'
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
+    console.log(req.body);
     const { email, password } = req.body;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
     try {
         if (!emailRegex.test(email)) {
+            console.log('Invalid email address:', email);
             return res.status(400).json({ message: 'Invalid email address' });
         }
         if (!passwordRegex.test(password)) {
@@ -51,6 +53,7 @@ router.post('/login', async (req, res) => {
 
         const existingEmail = await User.findOne({ email });
         if (!existingEmail) {
+            console.log('Email already exists:', email);
             return res.status(400).json({ message: 'Email does not exist' });
         }
 
@@ -64,7 +67,7 @@ router.post('/login', async (req, res) => {
         }
         res.status(200).json({ message: 'Login successful', user: userData });
     } catch (error) {
-        console.error(error)
+        console.error('Registration error:', error);
         res.status(500).json({ message: 'Server error' })
     }
 })
