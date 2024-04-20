@@ -16,10 +16,12 @@ router.post('/register', async (req, res) => {
             return res.status(400).json({ message: 'Invalid email address' });
         }
         if (!passwordRegex.test(password)) {
+            console.log('Invalid password:', password);
             return res.status(400).json({ message: 'Invalid password. Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one digit, and one special character' });
         }
         const existingEmail = await User.findOne({ email });
         if (existingEmail) {
+            console.log('Email already exists:', email);
             return res.status(400).json({ message: 'Email already exists' });
         }
 
@@ -34,6 +36,7 @@ router.post('/register', async (req, res) => {
 
         res.status(201).json({ message: 'User created successfully' });
     } catch (error) {
+        console.error('Registration error:', error);
         res.status(500).json({ message: 'Server error' });
     }
 });
