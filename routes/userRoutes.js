@@ -1,8 +1,23 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
-import User from '../models/user.js'
+import User from '../models/user.js';
+import jwt from 'jsonwebtoken';
+import { secretKey } from '../src/config.js';
 
 const router = express.Router();
+
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    
+    if(token) return res.status(401).send('Access denied');
+
+    jwt.verify(token, secretKey, (err, user) => {
+        if(err) return res.status(403).send('Invalid token');
+        req.user = user;
+        next();
+    });
+};
 
 router.post('/register', async (req, res) => {
     console.log(req.body);
@@ -32,9 +47,9 @@ router.post('/register', async (req, res) => {
             email,
             password: hashedPassword,
         });
+        const token = jwt.sign({ email}, secretKey, { expiresIn: '1h'});
         await newUser.save();
-
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(201).json({ message: 'User created successfully', token, user: userData});
     } catch (error) {
         console.error('Registration error:', error);
         res.status(500).json({ message: 'Server error' });
@@ -68,7 +83,8 @@ router.post('/login', async (req, res) => {
         const userData = {
             email: email,
         }
-        res.status(200).json({ message: 'Login successful', user: userData });
+        const token = jwt.sign({ email}, secretKey, { expiresIn: '1h'});
+        res.status(200).json({ message: 'Login successful', token, user: userData });
     } catch (error) {
         console.error('Registration error:', error);
         res.status(500).json({ message: 'Server error' })
@@ -76,7 +92,7 @@ router.post('/login', async (req, res) => {
 })
 
 
-router.get('/profile', async (req, res) => {
+router.get('/profile', authenticateToken, async (req, res) => {
     try {
         const user = await User.findOne({email: req.user.email});
         res.json(user)
