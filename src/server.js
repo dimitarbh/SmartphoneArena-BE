@@ -23,6 +23,7 @@ async function startServer() {
     
     app.use("/auth", auth);
     app.use("/models", models);
+    
   } catch (error) {
     console.error("Error starting server:", error);
   }
