@@ -1,14 +1,15 @@
 import express from "express";
 import connectDb from "./connectDb.js";
 import auth from "../routes/userRoutes.js";
+import models from "../routes/models.js"
 import dotenv from 'dotenv';
 import cors from 'cors';
 import corsOptions from '../routes/cors.js';
 
 dotenv.config();
 const app = express();
-app.use(cors(corsOptions));
 const port = process.env.PORT || 3000;
+app.use(cors(corsOptions));
 app.use(express.json());
 
 async function startServer() {
@@ -21,6 +22,7 @@ async function startServer() {
     });
     
     app.use("/auth", auth);
+    app.use("/models", models);
   } catch (error) {
     console.error("Error starting server:", error);
   }

@@ -1,3 +1,3 @@
 import crypto from 'crypto';
 
-export const secretKey = crypto.randomBytes(32).toString('hex');
+export const secretKey = crypto.randomBytes(32).toString('hex')
