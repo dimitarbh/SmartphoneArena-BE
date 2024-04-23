@@ -6,7 +6,7 @@ const router = express.Router()
 router.get('/', async(req, res) => {
     try {
         const models = await brandModels.find()
-        res.json(models)
+        res.status(201).json({message: 'Model received'}, models)
     } catch(error) {
         console.error(error)
         res.status(500).json({message: 'Server error'})
@@ -16,7 +16,7 @@ router.get('/', async(req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const currentModel = await brandModels.findById(req.params.id)
-        res.json(book)
+        res.status(201).json({message: 'Model ID received'}, currentModel)
     } catch(error) {
         console.error(error)
         res.status(500).json({message: 'Server error'})
