@@ -5,7 +5,6 @@ const brandModelsSchema = new mongoose.Schema({
     brand: {type: String, required: true, unique: true},
     price: { type: Number },
     releaseDate: { type: Date },
-    specifications: modelSpecificationsSchema,
     displaySize: { type: String },
     RAM: { type: String },
     storage: { type: String },
