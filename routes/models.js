@@ -3,9 +3,9 @@ import brandModels from '../models/brandModels.js'
 
 const router = express.Router()
 
-router.get('/:brandId/models', async (req, res) => {
+router.get('/:brandId', async (req, res) => {
     try {
-        const models = await brandModels.find({ brand: req.params.brandId });
+        const models = await brandModels.find(req.params.brandId);
         res.status(201).json({message: 'Model received', models})
     } catch(error) {
         console.error(error)
