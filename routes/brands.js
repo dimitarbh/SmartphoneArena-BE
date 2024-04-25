@@ -5,7 +5,7 @@ const router = express.Router()
 
 
 router.get('/', async (req, res) => {
-         const allBrands = await brands.find({})
+         const allBrands = await brands.find()
         res.status(201).json(allBrands);
     } catch(error) {
         console.error(error)
