@@ -17,6 +17,17 @@ router.get('/:brandId', async (req, res) => {
     }
 })
 
+
+router.get('/allBrandModels', async (req, res) => {
+    try {
+        const models = await brandModels.find(req.params.brandId);
+        res.status(201).json({message: 'Model received', models})
+    } catch(error) {
+        console.error(error)
+        res.status(500).json({message: 'Server error'})
+    }
+})
+
 router.post('/', async (req, res) => {
     const {image, brand} = req.body;
     try {

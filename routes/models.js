@@ -3,17 +3,7 @@ import brandModels from '../models/brandModels.js'
 
 const router = express.Router()
 
-router.get('/:brandId', async (req, res) => {
-    try {
-        const models = await brandModels.find(req.params.brandId);
-        res.status(201).json({message: 'Model received', models})
-    } catch(error) {
-        console.error(error)
-        res.status(500).json({message: 'Server error'})
-    }
-})
-
-router.get('/models/:modelId', async (req, res) => {
+router.get('/:modelId', async (req, res) => {
     try {
         const currentModel = await brandModels.findById(req.params.modelId);
         res.status(201).json({message: 'Model ID received', currentModel})
