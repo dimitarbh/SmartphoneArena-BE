@@ -5,8 +5,8 @@ const router = express.Router()
 
 
 router.get('/', async (req, res) => {
-         const allBrands = await brands.find()
-        res.status(201).json(allBrands);
+         const allBrands = await brands.find({})
+        res.status(201).json({message: 'brands retrieved successfully', allBrands});
     } catch(error) {
         console.error(error)
         res.status(500).json({message: 'Server error'})
