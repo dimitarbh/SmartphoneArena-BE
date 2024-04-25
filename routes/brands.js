@@ -5,6 +5,7 @@ const router = express.Router()
 
 
 router.get('/', async (req, res) => {
+         try {
          const allBrands = await brands.find({})
         res.status(201).json({message: 'brands retrieved successfully', allBrands});
     } catch(error) {
