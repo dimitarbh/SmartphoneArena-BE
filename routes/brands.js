@@ -3,6 +3,16 @@ import brands from '../models/brands.js'
 
 const router = express.Router()
 
+
+router.get('/', async (req, res) => {
+         const allBrands = await brands.find({})
+        res.status(201).json(allBrands);
+    } catch(error) {
+        console.error(error)
+        res.status(500).json({message: 'Server error'})
+    }
+})
+
 router.get('/:brandId', async (req, res) => {
     const brandId = req.params.brandId;
     try {
