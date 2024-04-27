@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 
 const brandModelsSchema = new mongoose.Schema({
     images: [{ type: String, required: true }],
-    brand: {type: String, required: true, unique: true},
+    brand: {type: mongoose.Schema.Types.ObjectId, ref: 'Brand', required: true},
+    model: {type: String, required: true},
     price: { type: Number },
     releaseDate: { type: Date },
     displaySize: { type: String },
