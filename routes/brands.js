@@ -35,7 +35,7 @@ router.get('/allBrandModels', async (req, res) => {
         if(!brandId) {
             return res.status(400).send('id is required')
         }
-        const models = await brandModels.find(req.params.brandId);
+        const models = await brandModels.find({ brandId: brandId });
         res.status(201).json({message: 'Model received', models})
     } catch(error) {
         console.error(error)
