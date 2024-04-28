@@ -3,6 +3,7 @@ import connectDb from "./connectDb.js";
 import auth from "../routes/userRoutes.js";
 import model from "../routes/brandCurrentModel.js"
 import brands from "../routes/brands.js"
+import brandModels from "../routes/brandModels.js"
 import dotenv from 'dotenv';
 import cors from 'cors';
 import corsOptions from '../routes/cors.js';
@@ -25,6 +26,8 @@ async function startServer() {
     app.use("/auth", auth);
     app.use("/model", model);
     app.use("/brands", brands)
+    app.use("/brands/:brandId", brandModels);
+
     
   } catch (error) {
     console.error("Error starting server:", error);
