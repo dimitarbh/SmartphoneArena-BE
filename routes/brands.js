@@ -32,7 +32,7 @@ router.get('/:brandId', async (req, res) => {
 
 router.get('/allBrandModels/:brandId', async (req, res) => {
     try {
-        const brandId = req.query.brandId;
+        const brandId = req.params.brandId;
         if(!brandId) {
             return res.status(400).send('id is required')
         }
