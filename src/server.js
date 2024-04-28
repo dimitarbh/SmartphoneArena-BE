@@ -26,7 +26,7 @@ async function startServer() {
     app.use("/auth", auth);
     app.use("/model", model);
     app.use("/brands", brands)
-    app.use("/brands/:brandId", brandModels);
+    app.use("/brands/:brandId/models", brandModels);
 
     
   } catch (error) {
