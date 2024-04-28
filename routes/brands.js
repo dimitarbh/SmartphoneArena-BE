@@ -6,8 +6,8 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
          try {
-         const allBrands = await brands.find({})
-        res.status(201).json({message: 'brands retrieved successfully', allBrands});
+         const allBrand = await brands.find({})
+        res.status(201).json({message: 'brands retrieved successfully', allBrand});
     } catch(error) {
         console.error(error)
         res.status(500).json({message: 'Server error'})
@@ -33,9 +33,9 @@ router.get('/allBrandModels', async (req, res) => {
     try {
         const brandId = req.query.brandId;
         if(!brandId) {
-            return res.status(400).send('id is required')
+            return res.status(400).send('Brand ID is required')
         }
-        const models = await brandModels.find({ brandId: brandId });
+        const models = await brandModels.find({ brand: brandId });
         res.status(201).json({message: 'Model received', models})
     } catch(error) {
         console.error(error)
