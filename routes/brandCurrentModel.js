@@ -1,11 +1,11 @@
 import express from 'express'
-import brandModels from '../models/brandModels.js'
+import brandCurrentModel from '../models/brandCurrentModel.js'
 
 const router = express.Router()
 
 router.get('/:modelId', async (req, res) => {
     try {
-        const currentModel = await brandModels.findById(req.params.modelId);
+        const currentModel = await brandCurrentModel.findById(req.params.modelId);
         res.status(201).json({message: 'Model ID received', currentModel})
     } catch(error) {
         console.error(error)
@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
     const { images, brand, price, releaseDate, specifications, displaySize, RAM, storage, cameraResolution, batteryCapacity } = req.body;
     
     try {
-        const newModel = new brandModels({
+        const newModel = new brandCurrentModel({
             images,
             brand,
             price,
@@ -44,7 +44,7 @@ router.post('/:id/specifications', async (req, res) => {
     const { id } = req.params;
 
     try {
-        const existingModel = await brandModels.findById(id);
+        const existingModel = await brandCurrentModel.findById(id);
         if (!existingModel) {
             return res.status(404).json({ message: 'Model not found' });
         }
