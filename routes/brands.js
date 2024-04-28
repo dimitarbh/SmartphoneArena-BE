@@ -32,16 +32,16 @@ router.get('/:brandId', async (req, res) => {
 router.get('/allBrandModels', async (req, res) => {
     try {
         const brandId = req.query.brandId;
-        if (!brandId) {
-            return res.status(400).send('Brand ID is required');
+        if(!brandId) {
+            return res.status(400).send('id is required')
         }
-        const models = await brandModels.find({ brand: brandId });
-        res.status(200).json({ message: 'Models received', models });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        const models = await brandModels.find(req.params.brandId);
+        res.status(201).json({message: 'Model received', models})
+    } catch(error) {
+        console.error(error)
+        res.status(500).json({message: 'Server error'})
     }
-});
+})
 
 router.post('/', async (req, res) => {
     const {image, brand} = req.body;
