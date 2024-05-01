@@ -14,7 +14,7 @@ router.get('/:modelId', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-    const { images, brand, mode, price, releaseDate, displaySize, RAM, storage, cameraResolution, batteryCapacity } = req.body;
+    const { images, brand, model, price, releaseDate, displaySize, RAM, storage, cameraResolution, batteryCapacity } = req.body;
     
     try {
         const newModel = new brandCurrentModel({
