@@ -28,7 +28,6 @@ async function startServer() {
     app.use("/model", model);
     app.use("/brands", brands)
 
-
     
   } catch (error) {
     console.error("Error starting server:", error);
