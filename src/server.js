@@ -6,9 +6,11 @@ import brands from "../routes/brands.js"
 import dotenv from 'dotenv';
 import cors from 'cors';
 import corsOptions from '../routes/cors.js';
+import bodyParser from 'body-parser';
 
 dotenv.config();
 const app = express();
+app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
 app.use(cors(corsOptions));
 app.use(express.json());
