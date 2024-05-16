@@ -1,6 +1,7 @@
 import express from 'express'
 import brandCurrentModel from '../models/brandCurrentModel.js'
 import Brand from '../models/Brand.js'
+import mongoose from 'mongoose';
 
 const router = express.Router()
 
