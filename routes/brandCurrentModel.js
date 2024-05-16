@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
         res.status(201).json({ message: 'Model created successfully', model: newModel });
     } catch (error) {
         console.error('Error creating model:', error.message);
-        error.code === 11000) {
+        if(error.code === 11000) {
             res.status(400).json({ message: 'Duplicate key error', details: error.keyValue });
         } else {
             res.status(500).json({ message: 'Server error', error: error.message });
