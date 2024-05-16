@@ -13,6 +13,8 @@ const brandModelsSchema = new mongoose.Schema({
     batteryCapacity: { type: String },
 })
 
+brandModelsSchema.index({ brand: 1, model: 1 }, { unique: true });
+
 const brandCurrentModel = mongoose.model('Brand models', brandModelsSchema, 'BrandModels')
 
 export default brandCurrentModel
