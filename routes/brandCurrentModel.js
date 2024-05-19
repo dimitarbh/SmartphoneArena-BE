@@ -6,23 +6,25 @@ const router = express.Router()
 router.get('/:modelId', async (req, res) => {
     try {
         const currentModel = await brandCurrentModel.findById(req.params.modelId);
-        res.status(201).json({message: 'Model ID received', currentModel})
-    } catch(error) {
-        console.error(error)
-        res.status(500).json({message: 'Server error'})
+        if (!currentModel) {
+            return res.status(404).json({ message: 'Model not found' });
+        }
+        res.status(200).json(currentModel);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
-})
-
+});
 router.post('/', async (req, res) => {
-    const { images, brand, price, releaseDate, specifications, displaySize, RAM, storage, cameraResolution, batteryCapacity } = req.body;
+    const { images, brand, price, releaseDate, displaySize, RAM, storage, cameraResolution, batteryCapacity } = req.body;
     
     try {
         const newModel = new brandCurrentModel({
             images,
             brand,
+            model,
             price,
             releaseDate,
-            specifications,
             displaySize,
             RAM,
             storage,
