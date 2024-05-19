@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 
 const router = express.Router()
 
-router.get('/:modelId', async (req, res) => {
+router.get('/models/:modelId', async (req, res) => {
     try {
         const currentModel = await brandCurrentModel.findById(req.params.modelId);
         if (!currentModel) {
@@ -17,6 +17,7 @@ router.get('/:modelId', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
 router.post('/', async (req, res) => {
     const { images, brand, model, price, releaseDate, displaySize, RAM, storage, cameraResolution, batteryCapacity } = req.body;
     if (!mongoose.Types.ObjectId.isValid(brand)) {
