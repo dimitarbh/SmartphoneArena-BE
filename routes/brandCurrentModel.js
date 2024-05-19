@@ -1,5 +1,7 @@
 import express from 'express'
 import brandCurrentModel from '../models/brandCurrentModel.js'
+import Brand from '../models/Brand.js'
+import mongoose from 'mongoose';
 
 const router = express.Router()
 
@@ -16,9 +18,16 @@ router.get('/:modelId', async (req, res) => {
     }
 });
 router.post('/', async (req, res) => {
-    const { images, brand, price, releaseDate, displaySize, RAM, storage, cameraResolution, batteryCapacity } = req.body;
-    
+    const { images, brand, model, price, releaseDate, displaySize, RAM, storage, cameraResolution, batteryCapacity } = req.body;
+    if (!mongoose.Types.ObjectId.isValid(brand)) {
+        return res.status(400).json({ message: 'Invalid brand ObjectId' });
+    }
+
     try {
+        const brandExists = await Brand.findById(brand);
+        if (!brandExists) {
+        return res.status(400).json({ message: 'Brand not found' });
+        }
         const newModel = new brandCurrentModel({
             images,
             brand,
@@ -36,8 +45,12 @@ router.post('/', async (req, res) => {
         
         res.status(201).json({ message: 'Model created successfully', model: newModel });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        console.error('Error creating model:', error.message);
+        if(error.code === 11000) {
+            res.status(400).json({ message: 'Duplicate key error', details: error.keyValue });
+        } else {
+            res.status(500).json({ message: 'Server error', error: error.message });
+        }
     }
 });
 
