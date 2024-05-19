@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 
 const router = express.Router()
 
-router.get('/models/:modelId', async (req, res) => {
+router.get('/:modelId', async (req, res) => {
     try {
         const currentModel = await brandCurrentModel.findById(req.params.modelId);
         if (!currentModel) {
